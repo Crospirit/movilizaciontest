@@ -251,16 +251,27 @@
 
         let totalPreguntas = 12;
         let puntaje = 0;
+        let preguntasFalladas = []; // Para almacenar preguntas falladas
 
         for (let pregunta in respuestasCorrectas) {
             let seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
             if (seleccionada && seleccionada.value === respuestasCorrectas[pregunta]) {
                 puntaje++;
+            } else {
+                preguntasFalladas.push(pregunta); // Añadir pregunta fallada a la lista
             }
         }
 
         let resultado = `Has obtenido ${puntaje} de ${totalPreguntas}`;
         document.getElementById("score").innerText = resultado;
+
+        // Mostrar preguntas falladas
+        if (preguntasFalladas.length > 0) {
+            let mensajeFalladas = `Has fallado las siguientes preguntas: ${preguntasFalladas.join(", ")}`;
+            alert(mensajeFalladas);
+        } else {
+            alert("¡Felicidades! Has respondido correctamente todas las preguntas.");
+        }
 
         // Marcar el cuestionario como corregido y deshabilitar el botón
         cuestionarioCorregido = true;
