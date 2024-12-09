@@ -218,9 +218,9 @@
         <button type="button" id="submitBtn" onclick="calcularCalificacion()">Corregir</button>
     </form>
 </div>
+<div id="falladas" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1);"></div>
 
-
-<script>
+    <script>
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
     });
@@ -253,24 +253,36 @@
         let puntaje = 0;
         let preguntasFalladas = []; // Para almacenar preguntas falladas
 
+        // Bucle para comprobar las respuestas
         for (let pregunta in respuestasCorrectas) {
             let seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
             if (seleccionada && seleccionada.value === respuestasCorrectas[pregunta]) {
                 puntaje++;
             } else {
-                preguntasFalladas.push(pregunta); // Añadir pregunta fallada a la lista
+                preguntasFalladas.push(pregunta.replace("q", "Pregunta ")); // Formatear el nombre de la pregunta
             }
         }
 
+        // Mostrar el resultado
         let resultado = `Has obtenido ${puntaje} de ${totalPreguntas}`;
         document.getElementById("score").innerText = resultado;
 
-        // Mostrar preguntas falladas
+        // Mostrar preguntas falladas de forma bonita
+        let falladasDiv = document.getElementById("falladas");
+        falladasDiv.innerHTML = ""; // Limpiar contenido previo
+
         if (preguntasFalladas.length > 0) {
-            let mensajeFalladas = `Has fallado las siguientes preguntas: ${preguntasFalladas.join(", ")}`;
-            alert(mensajeFalladas);
+            falladasDiv.innerHTML = `
+                <h3 style="color: red;">Preguntas Falladas:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    ${preguntasFalladas.map(p => `<li style="color: #FF4500; font-weight: bold;">${p}</li>`).join("")}
+                </ul>
+            `;
         } else {
-            alert("¡Felicidades! Has respondido correctamente todas las preguntas.");
+            falladasDiv.innerHTML = `
+                <h3 style="color: green;">¡Felicidades!</h3>
+                <p style="color: #4CAF50; font-weight: bold;">Has respondido correctamente todas las preguntas.</p>
+            `;
         }
 
         // Marcar el cuestionario como corregido y deshabilitar el botón
