@@ -217,9 +217,17 @@
         e.preventDefault();
     });
 
+    // Variable para rastrear si ya se ha corregido
+    let cuestionarioCorregido = false;
+
     function calcularCalificacion() {
+        if (cuestionarioCorregido) {
+            alert("Ya has corregido el cuestionario. Por favor, recarga la página para intentarlo de nuevo.");
+            return;
+        }
+
         let respuestasCorrectas = {
-           "q1": "c",
+            "q1": "c",
             "q2": "a",
             "q3": "b",
             "q4": "a",
@@ -245,6 +253,10 @@
 
         let resultado = `Has obtenido ${puntaje} de ${totalPreguntas}`;
         document.getElementById("score").innerText = resultado;
+
+        // Marcar el cuestionario como corregido y deshabilitar el botón
+        cuestionarioCorregido = true;
+        document.getElementById("submitBtn").disabled = true;
     }
 </script>
 
